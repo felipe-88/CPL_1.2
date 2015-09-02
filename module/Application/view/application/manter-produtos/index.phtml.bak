@@ -1,0 +1,88 @@
+<?php header("Content-type: text/html; charset=utf-8"); ?>
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+  </head>
+  <body>
+    <div class="row">
+      <div class="col-md-10 col-sm-offset-1">
+        <div class="panel">
+          <div class="panel-heading">
+            <h3 class="panel-title">Produtos</h3>
+          </div>
+          <div class="panel-body">
+            <div class="col-sm-1"> <a href="%3C?=$this-%3Eurl%28%27produtos%27,%20array%28%27action%27%20=%3E%20%27adicionar%27%29%29?%3E"
+                class="btn btn-success btn-add" title="Novo"><span class="glyphicon glyphicon-plus"></span>Novo
+                produto</a> </div>
+            <form method="GET" action="&lt;?=$this-&gt;url('produtos', array('action' =&gt; 'buscar'))?&gt;">
+              <div class="col-sm-offset-4 col-sm-5"> <label for="tipoSlct" class="col-lg-3 col-md-3 control-label">Selecione
+                  o Tipo para pesquisa:</label>
+                <div class="col-lg-9 col-md-9">
+                  <select name="tipoSlct" class="form-control" id="tipoSlct">
+                    <option>----Selecione um tipo de produto----</option>
+                    <!--?  foreach ($this--->tiposProduto as $tipoProduto):?&gt;
+                    <!--?if($tipoProduto--->getDescricao() == $_tipo):?&gt;
+                    <option value="&lt;?=$tipoProduto-&gt;getIdTipoProduto()?&gt;"
+                      selected="selected"><!--?=$tipoProduto--->getDescricao()?&gt;</option>
+                    <!--?else:?-->
+                    <option value="&lt;?=$tipoProduto-&gt;getIdTipoProduto()?&gt;"><!--?=$tipoProduto--->getDescricao()?&gt;</option>
+                    <!--?endif;?-->
+                    <!--?  endforeach;?-->
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-offset-4 col-sm-5"> <input name="busca" class="form-control"
+                  placeholder="Digite a Descrição para pesquisa" maxlength="150"
+                  type="text"> </div>
+              <div class="col-sm-1"> <button type="submit" class="btn btn-success"><span
+                    class="glyphicon glyphicon-search"></span></button> </div>
+            </form>
+            produtos as $key =&gt; $produto): ?&gt;
+            <table class="table table-striped table-bordered table-hover">
+              <tbody>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Descricao</th>
+                  <th>Unidade</th>
+                  <th>&nbsp;</th>
+                </tr>
+                <!--? foreach ($this--->
+                <tr>
+                  <td class="col-sd-2"><!--?= $produto--->getTipo() ?&gt;</td>
+                  <td class="col-sd-2"><!--?= $produto--->getDescricao() ?&gt;</td>
+                  <td class="col-sd-2"><!--?= $produto--->getUnidade() ?&gt;</td>
+                  <td class="col-sd-2 btns"> <a class="btn btn-xs btn-info" title="Visualizar"
+                      href="/produtos/visualizar/%3C?=$produto-%3EgetIdProduto%28%29?%3E"><span
+                        class="glyphicon glyphicon-new-window"></span></a> <a class="btn btn-xs btn-warning"
+                      title="Editar" href="/produtos/editar/%3C?=$produto-%3EgetIdProduto%28%29?%3E"><span
+                        class="glyphicon glyphicon-edit"></span></a> <a class="btn btn-xs btn-danger"
+                      title="Excluir" href="/produtos/excluir/%3C?=$produto-%3EgetIdProduto%28%29?%3E"><span
+                        class="glyphicon glyphicon-floppy-remove"></span></a> </td>
+                </tr>
+                <!--? endforeach; ?-->
+              </tbody>
+            </table>
+            <!--?php
+                // add at the end of the file after the table                echo $this--->paginationControl(
+            // the paginator object $this-&gt;produtos, // the scrolling style;
+            see
+            http://zf2.readthedocs.org/en/release-2.1.4/modules/zend.paginator.usage.html#rendering-pages-with-view-scripts
+            'sliding', // the partial to use to render the control
+            array('partial/paginator.phtml', 'Produtos'), // the route to link
+            to when a user clicks a control link array( 'route' =&gt;
+            'produtos', 'orderby' =&gt; $this-&gt;orderby, ) ); ?&gt;
+            <?php if(isset($_GET['busca'])):?>
+            <div class="panel-footer center"> <a href="%3C?=$this-%3Eurl%28%27produtos%27,%20array%28%27action%27%20=%3E%20%27index%27%29%29?%3E"
+                class="btn btn-default" title="Voltar"><span class="glyphicon glyphicon-backward"></span>
+                Voltar</a> </div>
+            <?php endif;?> </div>
+        </div>
+      </div>
+    </div>
+    <!--? $this--->headScript()-&gt;captureStart(); ?&gt;
+    $(document).ready(function (){ $('.btn-danger').on('click', function () {
+    var msg = 'Tem certeza que deseja realizar esta operação?'; return
+    confirm(msg); }); });
+    <!--? $this--->headScript()-&gt;captureEnd(); ?&gt;
+  </body>
+</html>
